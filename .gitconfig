@@ -1,0 +1,9 @@
+[user]
+	name = itzL1m4k
+	email = 102859157+itzL1m4k@users.noreply.github.com
+[core]
+	editor = code
+[init]
+	defaultBranch = main
+[safe]
+	directory = C:/Users/limak/.dotfiles
