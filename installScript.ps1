@@ -103,12 +103,15 @@ if ($choice -eq "Y" || $choice -eq "y") {
     "JesseDuffield.lazygit",
     "BurntSushi.ripgrep.MSVC",
     "Clement.bottom",
-    "dundee.gdu"
+    "dundee.gdu",
+    "Chocolatey.Chocolatey" # Only for mingw install
   )
 
   foreach ($app in $apps) {
     winget install --id=$app -e
   }
+
+  choco install mingw
 
   # Install other dependencies
   npm install tree-sitter-cli
