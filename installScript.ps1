@@ -66,13 +66,12 @@ $apps = @(
   "Python.Python.3.12",
   "Oracle.JavaRuntimeEnvironment",
   "Notepad++.Notepad++",
-  "IrfanSkiljan.IrfanView",
+  "sylikc.JPEGView",
   "AntibodySoftware.WizTree",
-  "voidtools.Everything",
+  "voidtools.Everything.Lite",
   "BleachBit.BleachBit",
   "KDE.Krita",
   "OBSProject.OBSStudio",
-  "Daum.PotPlayer",
   "Skillbrains.Lightshot",
   "RevoUninstaller.RevoUninstaller",
   "EpicGames.EpicGamesLauncher",
@@ -89,40 +88,6 @@ foreach ($app in $apps) {
   else {
     winget install --id=$app -e
   }
-}
-
-# Install neovim with AstroNvim profile
-Write-Host "Do you wanna install AstroNvim?"
-Write-Host "(Y/N)"
-
-$choice = Read-Host
-
-if ($choice -eq "Y" || $choice -eq "y") {
-  $apps = @(
-    "Neovim.Neovim",
-    "JesseDuffield.lazygit",
-    "BurntSushi.ripgrep.MSVC",
-    "Clement.bottom",
-    "dundee.gdu",
-    "Chocolatey.Chocolatey" # Only for mingw install
-  )
-
-  foreach ($app in $apps) {
-    winget install --id=$app -e
-  }
-
-  choco install mingw
-
-  # Install other dependencies
-  npm install tree-sitter-cli
-
-  git clone --depth 1 https://github.com/AstroNvim/template $env:LOCALAPPDATA\nvim
-  Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
-
-  Write-Host "Type nvim in terminal to complete configuration!"
-}
-else {
-  Write-Host "Skipping AstroNvim installation..."
 }
 
 # refreshing env variables
