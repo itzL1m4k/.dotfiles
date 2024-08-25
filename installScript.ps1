@@ -1,5 +1,5 @@
 # Function to refreshing env variables
-function Update-Env {
+function refreshenv {
   $env:Path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine) + ';' + [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
   $env:PSModulePath = [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::Machine) + ';' + [System.Environment]::GetEnvironmentVariable('PSModulePath', [System.EnvironmentVariableTarget]::User)
 }
@@ -67,6 +67,7 @@ $apps = @(
   "Oracle.JavaRuntimeEnvironment",
   "Notepad++.Notepad++",
   "sylikc.JPEGView",
+  "clsid2.mpc-hc",
   "AntibodySoftware.WizTree",
   "voidtools.Everything.Lite",
   "BleachBit.BleachBit",
@@ -91,7 +92,7 @@ foreach ($app in $apps) {
 }
 
 # refreshing env variables
-Update-Env
+refreshenv
 
 # Open new powershell without admin right and install spotify, then spicetify
 $installSpotify = "winget install -e --id Spotify.Spotify"
@@ -125,4 +126,4 @@ New-Link "$env:USERPROFILE\.gitconfig" "$env:DOTFILES\.gitconfig"
 reg import "$env:DOTFILES\registry\registry.req"
 
 # Refreshing env variables
-Update-Env
+refreshenv
