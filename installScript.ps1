@@ -44,70 +44,70 @@ function Install-Programs {
 # Install or update winget, then apply settings
 Invoke-WebRequest -useb https://raw.githubusercontent.com/itzL1m4k/.dotfiles/main/installWinget.ps1 | Invoke-Expression
 
-# Hashtable to store flags for specific applications
-$flags = @{
-  "Git.Git"   = "-i"
-  "7zip.7zip" = "--force"
-}
+# # Hashtable to store flags for specific applications
+# $flags = @{
+#   "Git.Git"   = "-i"
+#   "7zip.7zip" = "--force"
+# }
 
-# List of applications to install via winget
-$apps = @(
-  "abbodi1406.vcredist",
-  "Microsoft.DirectX",
-  "Microsoft.XNARedist",
-  "OpenAL.OpenAL",
-  "Microsoft.WindowsTerminal.Preview",
-  "Microsoft.PowerShell.Preview",
-  "Git.Git",
-  "7zip.7zip",
-  "Starship.Starship",
-  "chrisant996.Clink",
-  "OpenJS.NodeJS",
-  "Python.Python.3.12",
-  "Oracle.JavaRuntimeEnvironment",
-  "Notepad++.Notepad++",
-  "sylikc.JPEGView",
-  "clsid2.mpc-hc",
-  "AntibodySoftware.WizTree",
-  "voidtools.Everything.Lite",
-  "BleachBit.BleachBit",
-  "KDE.Krita",
-  "OBSProject.OBSStudio",
-  "Skillbrains.Lightshot",
-  "RevoUninstaller.RevoUninstaller",
-  "EpicGames.EpicGamesLauncher",
-  "Valve.Steam",
-  "Discord.Discord"
-)
+# # List of applications to install via winget
+# $apps = @(
+#   "abbodi1406.vcredist",
+#   "Microsoft.DirectX",
+#   "Microsoft.XNARedist",
+#   "OpenAL.OpenAL",
+#   "Microsoft.WindowsTerminal.Preview",
+#   "Microsoft.PowerShell.Preview",
+#   "Git.Git",
+#   "7zip.7zip",
+#   "Starship.Starship",
+#   "chrisant996.Clink",
+#   "OpenJS.NodeJS",
+#   "Python.Python.3.12",
+#   "Oracle.JavaRuntimeEnvironment",
+#   "Notepad++.Notepad++",
+#   "sylikc.JPEGView",
+#   "clsid2.mpc-hc",
+#   "AntibodySoftware.WizTree",
+#   "voidtools.Everything.Lite",
+#   "BleachBit.BleachBit",
+#   "KDE.Krita",
+#   "OBSProject.OBSStudio",
+#   "Skillbrains.Lightshot",
+#   "RevoUninstaller.RevoUninstaller",
+#   "EpicGames.EpicGamesLauncher",
+#   "Valve.Steam",
+#   "Discord.Discord"
+# )
 
-# Installing the applications with the appropriate flags
-foreach ($app in $apps) {
-  $appFlags = $flags[$app]
-  if ($appFlags) {
-    winget install --id=$app -e $appFlags
-  }
-  else {
-    winget install --id=$app -e
-  }
-}
+# # Installing the applications with the appropriate flags
+# foreach ($app in $apps) {
+#   $appFlags = $flags[$app]
+#   if ($appFlags) {
+#     winget install --id=$app -e $appFlags
+#   }
+#   else {
+#     winget install --id=$app -e
+#   }
+# }
 
-# refreshing env variables
-refreshenv
+# # refreshing env variables
+# refreshenv
 
-# Open new powershell without admin right and install spotify, then spicetify
-$installSpotify = "winget install -e --id Spotify.Spotify"
-$installSpicetify = "Invoke-WebRequest -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | Invoke-Expression"
+# # Open new powershell without admin right and install spotify, then spicetify
+# $installSpotify = "winget install -e --id Spotify.Spotify"
+# $installSpicetify = "Invoke-WebRequest -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | Invoke-Expression"
 
-runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpotify ; $installSpicetify"
+# runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpotify ; $installSpicetify"
 
 # Cloning the repository to the hidden directory .dotfiles
 if (-not (Test-Path "$env:USERPROFILE\.dotfiles")) {
   git clone https://github.com/itzL1m4k/.dotfiles.git "$env:USERPROFILE\.dotfiles"
 }
 
-# Install vscode, vencord
-Install-Programs "$env:TEMP\setup.exe" "https://go.microsoft.com/fwlink/?linkid=852157"
-Install-Programs "$env:TEMP\VencordInstaller.exe" "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
+# # Install vscode, vencord
+# Install-Programs "$env:TEMP\setup.exe" "https://go.microsoft.com/fwlink/?linkid=852157"
+# Install-Programs "$env:TEMP\VencordInstaller.exe" "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
 
 # Creating env variable for ~/.dotfiles
 $env:DOTFILES = "$env:USERPROFILE\.dotfiles"
