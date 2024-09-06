@@ -52,8 +52,6 @@ $flags = @{
 
 # List of applications to install via winget
 $apps = @(
-  "abbodi1406.vcredist",
-  "Microsoft.DirectX",
   "Microsoft.XNARedist",
   "OpenAL.OpenAL",
   "Microsoft.WindowsTerminal.Preview",
@@ -63,11 +61,10 @@ $apps = @(
   "Starship.Starship",
   "chrisant996.Clink",
   "OpenJS.NodeJS",
-  "Python.Python.3.12",
   "Oracle.JavaRuntimeEnvironment",
   "Notepad++.Notepad++",
   "sylikc.JPEGView",
-  "clsid2.mpc-hc",
+  "VideoLAN.VLC",
   "AntibodySoftware.WizTree",
   "voidtools.Everything.Lite",
   "BleachBit.BleachBit",
@@ -121,9 +118,6 @@ New-Link "$env:USERPROFILE\.config\starship.toml" "$env:DOTFILES\.config\starshi
 New-Link "$env:LOCALAPPDATA\clink\starship.lua" "$env:DOTFILES\clink\starship.lua"
 New-Link "$env:USERPROFILE\.bash_profile" "$env:DOTFILES\.bash_profile"
 New-Link "$env:USERPROFILE\.gitconfig" "$env:DOTFILES\.gitconfig"
-
-# Registry entries
-reg import "$env:DOTFILES\registry\registry.req"
 
 # Refreshing env variables
 refreshenv
