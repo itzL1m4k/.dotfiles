@@ -34,6 +34,9 @@ function New-Link {
   }
 }
 
+# Enable 'allowGlobalConfirmation' feature
+choco feature enable -n allowGlobalConfirmation
+
 # List of applications to install via Chocolatey with optional parameters
 $chocoApps = @(
   @{name="git.install"; params="/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf"},
