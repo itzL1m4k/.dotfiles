@@ -59,7 +59,8 @@ $chocoApps = @(
   @{name="audacity"},
   @{name="equalizerapo"},
   @{name="nvidia-geforce-now"},
-  @{name="spotify"}
+  @{name="spotify"},
+  @{name="choco-cleaner"},
 )
 
 # Installing the applications using Chocolatey
@@ -70,6 +71,9 @@ foreach ($app in $chocoApps) {
     choco install $app.name -y
   }
 }
+
+# Cleaning chocolatey with choco-cleaner package
+choco-cleaner
 
 # Open new powershell without admin right and install spicetify
 $installSpicetify = "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"

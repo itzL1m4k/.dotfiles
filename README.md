@@ -6,7 +6,9 @@ Set-ExecutionPolicy Bypass -Force; [System.Net.ServicePointManager]::SecurityPro
 
 ```
 
-## 2. Now you can run installScript in your powershell as administrator
+## 2. It is recommended to restart your powershell
+
+## 3. Now you can run installScript in your powershell as administrator
 
 ```powershell
 
@@ -14,6 +16,6 @@ iwr -useb https://raw.githubusercontent.com/itzL1m4k/.dotfiles/main/installScrip
 
 ```
 
-### Vscode profile: 
+### Vscode profile:
 
 https://vscode.dev/editor/profile/github/be718512714db271131d4759ed6f289b
