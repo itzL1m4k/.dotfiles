@@ -39,6 +39,9 @@ choco feature enable -n allowGlobalConfirmation
 
 # List of applications to install via Chocolatey with optional parameters
 $chocoApps = @(
+  @{name="vcredist-all"}, # Visual C++ redistributable
+  @{name="directx"},
+  @{name="nerd-fonts-cascadiacode"},
   @{name="git.install"; params="/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf"},
   @{name="vscode.install"; params="/NoContextMenuFiles /NoContextMenuFolders"},
   @{name="brave"},
