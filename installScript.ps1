@@ -98,8 +98,9 @@ if (-not (Test-Path "$env:USERPROFILE\.dotfiles")) {
 Install-Programs "$env:TEMP\VencordInstaller.exe" "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
 Install-Programs "$env:TEMP\VencordInstaller.exe" "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
 
-# Creating env variable for ~/.dotfiles
-$env:DOTFILES = "$env:USERPROFILE\.dotfiles"
+# Creating environment variable for ~/.dotfiles
+$env:DOTFILES = $dotfilesPath
+[System.Environment]::SetEnvironmentVariable('DOTFILES', $dotfilesPath, 'User')
 
 # Creating symlinks
 New-Link "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json" "$env:DOTFILES\terminal\settings.json"
