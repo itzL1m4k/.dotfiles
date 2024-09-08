@@ -1,10 +1,6 @@
 $ENV:STARSHIP_CONFIG = "$HOME\.config\starship.toml"
 Invoke-Expression (&starship init powershell)
 
-function clear {
-  Start-Process -FilePath "$env:USERPROFILE\.dotfiles\clear.bat" -Verb runas
-}
-
 # Import the Chocolatey Profile that contains the necessary code to enable
 # tab-completions to function for `choco`.
 # Be aware that if you are missing these lines from your profile, tab completion
