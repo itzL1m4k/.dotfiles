@@ -42,6 +42,7 @@ $chocoApps = @(
   @{name="vcredist-all"}, # Visual C++ redistributable
   @{name="directx"},
   @{name="nerd-fonts-cascadiacode"},
+  @{name="nerd-fonts-FiraCode"},
   @{name="git.install"; params="/GitAndUnixToolsOnPath /WindowsTerminal /NoAutoCrlf"},
   @{name="vscode.install"; params="/NoContextMenuFiles /NoContextMenuFolders"},
   @{name="brave"},
@@ -72,9 +73,9 @@ $chocoApps = @(
 # Installing the applications using Chocolatey
 foreach ($app in $chocoApps) {
   if ($app.params) {
-    choco install $app.name -y --params $app.params
+    choco install $app.name --params $app.params
   } else {
-    choco install $app.name -y
+    choco install $app.name
   }
 }
 
