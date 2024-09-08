@@ -18,4 +18,4 @@ iwr -useb https://raw.githubusercontent.com/itzL1m4k/.dotfiles/main/installScrip
 
 ### Vscode profile:
 
-https://vscode.dev/editor/profile/github/be718512714db271131d4759ed6f289b
+https://vscode.dev/profile/github/9853e8166cb081f646a01e112201cf32
