@@ -56,6 +56,8 @@ $chocoApps = @(
   @{name="notepad3.install"},
   @{name="vlc.install"},
   @{name="lightshot.install"},
+  @{name="nomacs"},
+  @{name="everything"; params="/start-menu-shortcuts"},
   @{name="wiztree"},
   @{name="bleachbit.install"},
   @{name="krita"},
