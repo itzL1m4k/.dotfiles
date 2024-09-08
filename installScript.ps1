@@ -108,6 +108,3 @@ New-Link "$env:USERPROFILE\.config\starship.toml" "$env:DOTFILES\.config\starshi
 New-Link "$env:LOCALAPPDATA\clink\starship.lua" "$env:DOTFILES\clink\starship.lua"
 New-Link "$env:USERPROFILE\.bash_profile" "$env:DOTFILES\.bash_profile"
 New-Link "$env:USERPROFILE\.gitconfig" "$env:DOTFILES\.gitconfig"
-
-# Refreshing env variables
-refreshenv
