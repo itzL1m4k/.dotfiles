@@ -98,7 +98,7 @@ if (-not (Test-Path "$env:USERPROFILE\.dotfiles")) {
 
 # Install vencord for discord and steam
 Install-Programs "$env:TEMP\VencordInstaller.exe" "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
-Install-Programs "$env:TEMP\VencordInstaller.exe" "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
+Install-Programs "$env:TEMP\SteamSetup.exe" "https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe"
 
 # Creating environment variable for ~/.dotfiles
 $env:DOTFILES = $dotfilesPath
