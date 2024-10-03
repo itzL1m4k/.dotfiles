@@ -122,9 +122,6 @@ $wingetApps = @(
   # @{name="Microsoft.VisualStudio.2022.Community"},
 )
 
-# Installing bun.sh with the official sciprt install
-irm bun.sh/install.ps1 | iex
-
 # Installing the applications using winget
 foreach ($app in $wingetApps) {
   if ($app.params) {
@@ -149,17 +146,17 @@ foreach ($app in $chocoApps) {
   choco install $app.name
 }
 
+# Installing bun.sh with the official sciprt install
+irm bun.sh/install.ps1 | iex
+
 # Cleaning chocolatey with choco-cleaner package
 choco-cleaner
 
-# Open new powershell without admin right and install nvidia geforce now
+# Open new powershell without admin right and install geforce-now, spotify and spicetify
 $installGeforceNow = "winget install -e --id Nvidia.GeForceNow"
-runas /user:$env:USERNAME "powershell.exe -NoProfile $installGeforceNow"
-
-# Open new powershell without admin right and install spicetify
 $installSpotify = "winget install -e --id Spotify.Spotify"
 $installSpicetify = "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"
-runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpotify ; $installSpicetify"
+runas /user:$env:USERNAME "powershell.exe -NoProfile $installGeforceNow ; $installSpotify ; $installSpicetify"
 
 # refreshing env variables
 refreshenv
