@@ -12,9 +12,6 @@ function Install-Programs {
 
     [Parameter(Mandatory = $true)]
     [string]$url,
-
-    [Parameter(Mandatory = $true)]
-    [string]$install
   )
   try {
     # Download the file
@@ -28,7 +25,7 @@ function Install-Programs {
 
   try {
     # Install the program
-    Start-Process -FilePath $tempPath -ArgumentList $install -Wait -ErrorAction Stop
+    Start-Process -FilePath $tempPath -Wait -ErrorAction Stop
     Write-Host "Installation complete: $tempPath"
   }
   catch {
@@ -176,7 +173,7 @@ if (-not (Test-Path -Path $dotfilesPath)) {
 }
 
 # Install vencord for discord and steam
-Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe" -install ""
+Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
 
 # Creating symlinks with -Force
 New-Link -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json" -Target "$dotfilesPath\terminal\settings.json" -LinkType "Symbolic" -Force
