@@ -4,7 +4,11 @@
 Set-ExecutionPolicy Bypass -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-## 2. It is recommended to restart your powershell
+## 2. It is recommended to restart your powershell and type:
+
+```powershell
+Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+```
 
 ## 3. Now you can run installScript in your powershell as administrator
 
