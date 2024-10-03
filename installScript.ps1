@@ -117,7 +117,7 @@ $wingetApps = @(
   @{name="Nvidia.GeForceNow"},
   @{name="Spotify.Spotify"},
   @{name="Valve.Steam"},
-  @{name="9P8LTPGCBZXD"},
+  @{name="9P8LTPGCBZXD"}
 
   # @{name="Google.AndroidStudio"},
   # @{name="Microsoft.VisualStudio.2022.Community"},
@@ -142,7 +142,7 @@ choco feature enable -n allowGlobalConfirmation
 $chocoApps = @(
   @{name="nerd-fonts-FiraCode"},
   @{name="equalizerapo"},
-  @{name="choco-cleaner"},
+  @{name="choco-cleaner"}
 )
 
 # Installing the applications using Chocolatey
