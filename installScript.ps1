@@ -11,7 +11,7 @@ function Install-Programs {
     [string]$tempPath,
 
     [Parameter(Mandatory = $true)]
-    [string]$url,
+    [string]$url
   )
   try {
     # Download the file
@@ -114,7 +114,6 @@ $wingetApps = @(
   @{name="RevoUninstaller.RevoUninstaller"},
   @{name="EpicGames.EpicGamesLauncher"},
   @{name="Discord.Discord"},
-  @{name="Nvidia.GeForceNow"},
   @{name="Spotify.Spotify"},
   @{name="Valve.Steam"},
   @{name="9P8LTPGCBZXD"}
@@ -153,10 +152,14 @@ foreach ($app in $chocoApps) {
 # Cleaning chocolatey with choco-cleaner package
 choco-cleaner
 
+# Open new powershell without admin right and install nvidia geforce now
+$installGeforceNow = "winget install -e --id Nvidia.GeForceNow"
+runas /user:$env:USERNAME "powershell.exe -NoProfile $installGeforceNow"
+
 # Open new powershell without admin right and install spicetify
 $installSpotify = "winget install -e --id Spotify.Spotify"
 $installSpicetify = "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"
-runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpotify && $installSpicetify"
+runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpotify ; $installSpicetify"
 
 # refreshing env variables
 refreshenv
@@ -165,12 +168,12 @@ refreshenv
 $dotfilesPath = "$env:USERPROFILE\.dotfiles"
 
 # Cloning the repository to the hidden directory .dotfiles
-if (-not (Test-Path -Path $dotfilesPath)) {
-    git clone https://github.com/itzL1m4k/.dotfiles.git $dotfilesPath
-    Write-Host "Repository cloned to: $dotfilesPath"
-} else {
-    Write-Host "Directory '$dotfilesPath' already exists."
+if (Test-Path -Path $dotfilesPath) {
+    Remove-Item -Path $dotfilesPath -Recurse -Force
+    Write-Host "Directory '$dotfilesPath' removed."
 }
+git clone https://github.com/itzL1m4k/.dotfiles.git $dotfilesPath
+Write-Host "Repository cloned to: $dotfilesPath"
 
 # Install vencord for discord and steam
 Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
