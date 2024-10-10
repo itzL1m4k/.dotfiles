@@ -137,6 +137,8 @@ choco feature enable -n allowGlobalConfirmation
 # List of applications to install via Chocolatey
 $chocoApps = @(
   @{name="nerd-fonts-FiraCode"},
+  @{name="nerd-fonts-CascadiaCode"},
+  @{name="nerd-fonts-Hack"},
   @{name="equalizerapo"},
   @{name="choco-cleaner"}
 )
@@ -147,7 +149,9 @@ foreach ($app in $chocoApps) {
 }
 
 # Installing bun.sh with the official sciprt install
-irm bun.sh/install.ps1 | iex
+if (!(Get-Command bun -ErrorAction SilentlyContinue) -or !(Get-Command bunx -ErrorAction SilentlyContinue)) {
+  irm bun.sh/install.ps1 | iex
+}
 
 # Cleaning chocolatey with choco-cleaner package
 choco-cleaner
