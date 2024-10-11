@@ -94,7 +94,8 @@ $wingetApps = @(
   @{name="StartIsBack.StartIsBack"},
   @{name="Git.Git"; params="-i"},
   @{name="7zip.7zip"; params="--force"},
-  @{name="Microsoft.VisualStudioCode"},
+  @{name="VSCodium.VSCodium"},
+  @{name="Ghisler.TotalCommander"},
   @{name="Brave.Brave"},
   @{name="Microsoft.WindowsTerminal.Preview"},
   @{name="Microsoft.PowerShell"},
@@ -112,6 +113,7 @@ $wingetApps = @(
   @{name="KDE.Krita"},
   @{name="OBSProject.OBSStudio"},
   @{name="RevoUninstaller.RevoUninstaller"},
+  @{name="c0re100.qBittorrent-Enhanced-Edition"},
   @{name="EpicGames.EpicGamesLauncher"},
   @{name="Discord.Discord"},
   @{name="Spotify.Spotify"},
@@ -174,9 +176,8 @@ if (Test-Path -Path $dotfilesPath) {
     Write-Host "Directory '$dotfilesPath' removed."
 }
 git clone https://github.com/itzL1m4k/.dotfiles.git $dotfilesPath
-Write-Host "Repository cloned to: $dotfilesPath"
 
-# Install vencord for discord and steam
+# Install vencord for discord
 Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
 
 # Creating symlinks with -Force
