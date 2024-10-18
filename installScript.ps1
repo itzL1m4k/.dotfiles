@@ -89,6 +89,8 @@ $wingetApps = @(
   @{name="Microsoft.DirectX"},
   @{name="Microsoft.XNARedist"},
   @{name="Fastfetch-cli.Fastfetch"},
+  @{name="Universal-Debloater-Alliance.uad-ng"},
+  @{name="Google.PlatformTools"},
   @{name="StartIsBack.StartIsBack"},
   @{name="Git.Git"; params="-i"},
   @{name="7zip.7zip"; params="--force"},
