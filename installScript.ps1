@@ -90,6 +90,8 @@ $wingetApps = @(
   @{name="Microsoft.XNARedist"},
   @{name="Fastfetch-cli.Fastfetch"},
   @{name="Universal-Debloater-Alliance.uad-ng"},
+  @{name="ajeetdsouza.zoxide"},
+  @{name="fzf"},
   @{name="Google.PlatformTools"},
   @{name="StartIsBack.StartIsBack"},
   @{name="Git.Git"; params="-i"},
