@@ -10,17 +10,3 @@ $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
-
-# Import the module
-Import-Module Catppuccin
-
-# Set a flavor for easy access
-$Flavor = $Catppuccin['Mocha']
-
-# Print a summary of the flavor's colors
-# Returns Null, calls Write-Host internally.
-$Flavor.Table()
-
-# Print blocks of the flavor's colors
-# Returns a string
-Write-Host $Flavor.Blocks()
