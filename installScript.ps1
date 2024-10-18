@@ -78,8 +78,6 @@ function New-Link {
     } elseif ($LinkType -eq 'Hard') {
       New-Item -ItemType HardLink -Path $Path -Target $Target -Force
     }
-
-    Write-Host "Link created successfully: $Path -> $Target"
   }
   catch {
     Write-Error "Error creating link: $($_.Exception.Message)"
@@ -184,6 +182,7 @@ Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github
 New-Link -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json" -Target "$dotfilesPath\terminal\settings.json" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1" -Target "$dotfilesPath\powershell\powershell.ps1" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" -Target "$dotfilesPath\powershell\powershell.ps1" -LinkType "Symbolic" -Force
+New-Link -Path "$env:APPDATA\Notepad++\themes\catppuccin-mocha.xml" -Target "$dotfilesPath\notepad\catppuccin-mocha.xml" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\.config\starship.toml" -Target "$dotfilesPath\.config\starship.toml" -LinkType "Symbolic" -Force
 New-Link -Path "$env:LOCALAPPDATA\clink\starship.lua" -Target "$dotfilesPath\clink\starship.lua" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\.bash_profile" -Target "$dotfilesPath\.bash_profile" -LinkType "Symbolic" -Force
