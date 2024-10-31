@@ -93,10 +93,8 @@ $wingetApps = @(
   @{name="ajeetdsouza.zoxide"},
   @{name="fzf"},
   @{name="Google.PlatformTools"},
-  @{name="StartIsBack.StartIsBack"},
   @{name="Git.Git"; params="-i"},
   @{name="7zip.7zip"; params="--force"},
-  @{name="VSCodium.VSCodium"},
   @{name="Ghisler.TotalCommander"},
   @{name="Brave.Brave"},
   @{name="Microsoft.WindowsTerminal.Preview"},
@@ -181,6 +179,7 @@ git clone https://github.com/itzL1m4k/.dotfiles.git $dotfilesPath
 
 # Install vencord for discord
 Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
+Install-Programs -tempPath "$env:TEMP\VSCodeSetup-x64.exe" -url "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
 
 # Creating symlinks with -Force
 New-Link -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json" -Target "$dotfilesPath\terminal\settings.json" -LinkType "Symbolic" -Force
