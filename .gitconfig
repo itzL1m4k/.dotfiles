@@ -5,3 +5,5 @@
 	editor = code
 [init]
 	defaultBranch = main
+[safe]
+	directory = C:/Users/Admin/.dotfiles

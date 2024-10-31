@@ -1,7 +1,7 @@
 # Check if the script is run as an administrator
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Error "This script must be run as an administrator. Run PowerShell as an administrator and try again."
-    exit 1
+  Write-Error "This script must be run as an administrator. Run PowerShell as an administrator and try again."
+  exit 1
 }
 
 # Function to install programs from links
@@ -13,8 +13,8 @@ function Install-Programs {
     [Parameter(Mandatory = $true)]
     [string]$url
   )
+
   try {
-    # Download the file
     Invoke-WebRequest -Uri $url -OutFile $tempPath -UseBasicParsing -ErrorAction Stop
     Write-Host "Download complete: $url"
   }
@@ -24,7 +24,6 @@ function Install-Programs {
   }
 
   try {
-    # Install the program
     Start-Process -FilePath $tempPath -Wait -ErrorAction Stop
     Write-Host "Installation complete: $tempPath"
   }
@@ -33,7 +32,6 @@ function Install-Programs {
     return
   }
   finally {
-    # Clean up
     try {
       Remove-Item -Path $tempPath -Force -ErrorAction Stop
       Write-Host "Temporary file removed: $tempPath"
@@ -60,19 +58,16 @@ function New-Link {
   )
 
   try {
-    # Check if the target exists
     if (-not (Test-Path $Target)) {
       Write-Error "Target path '$Target' does not exist."
       return
     }
 
-    # If the target path exists and Force is set, remove the existing item
     if ((Test-Path $Path) -and $Force) {
       Remove-Item -Path $Path -Force
       Write-Host "Existing item at '$Path' removed."
     }
 
-    # Create a symbolic or hard link
     if ($LinkType -eq 'Symbolic') {
       New-Item -ItemType SymbolicLink -Path $Path -Target $Target -Force
     } elseif ($LinkType -eq 'Hard') {
@@ -91,11 +86,10 @@ $wingetApps = @(
   @{name="Fastfetch-cli.Fastfetch"},
   @{name="Universal-Debloater-Alliance.uad-ng"},
   @{name="ajeetdsouza.zoxide"},
-  @{name="fzf"},
+  @{name="junegunn.fzf"},
   @{name="Google.PlatformTools"},
   @{name="Git.Git"; params="-i"},
   @{name="7zip.7zip"; params="--force"},
-  @{name="Ghisler.TotalCommander"},
   @{name="Brave.Brave"},
   @{name="Microsoft.WindowsTerminal.Preview"},
   @{name="Microsoft.PowerShell"},
@@ -154,6 +148,8 @@ foreach ($app in $chocoApps) {
 if (!(Get-Command bun -ErrorAction SilentlyContinue) -or !(Get-Command bunx -ErrorAction SilentlyContinue)) {
   irm bun.sh/install.ps1 | iex
 }
+
+refreshenv
 
 # Cleaning chocolatey with choco-cleaner package
 choco-cleaner
