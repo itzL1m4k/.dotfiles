@@ -91,7 +91,7 @@ $wingetApps = @(
   @{name="Fastfetch-cli.Fastfetch"},
   @{name="Universal-Debloater-Alliance.uad-ng"},
   @{name="ajeetdsouza.zoxide"},
-  @{name="fzf"},
+  @{name="junegunn.fzf"},
   @{name="Google.PlatformTools"},
   @{name="Git.Git"; params="-i"},
   @{name="7zip.7zip"; params="--force"},
