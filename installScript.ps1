@@ -80,9 +80,6 @@ function New-Link {
 }
 
 $wingetApps = @(
-  @{name="abbodi1406.vcredist"},
-  @{name="Microsoft.DirectX"},
-  @{name="Microsoft.XNARedist"},
   @{name="Fastfetch-cli.Fastfetch"},
   @{name="ajeetdsouza.zoxide"},
   @{name="junegunn.fzf"},
@@ -107,12 +104,14 @@ $wingetApps = @(
   @{name="c0re100.qBittorrent-Enhanced-Edition"},
   @{name="EpicGames.EpicGamesLauncher"},
   @{name="Discord.Discord"},
-  @{name="Spotify.Spotify"},
   @{name="Valve.Steam"},
   @{name="9P8LTPGCBZXD"}
+  
   # @{name="Google.AndroidStudio"},
   # @{name="Microsoft.VisualStudio.2022.Community"},
+  
 )
+
 # Installing the applications using winget
 foreach ($app in $wingetApps) {
   if ($app.params) {
@@ -121,33 +120,38 @@ foreach ($app in $wingetApps) {
     winget install -e --id $app.name
   }
 }
+
 # Enable 'allowGlobalConfirmation' feature
 choco feature enable -n allowGlobalConfirmation
+
 # List of applications to install via Chocolatey
 $chocoApps = @(
-  @{name="nerd-fonts-FiraCode"},
-  @{name="nerd-fonts-CascadiaCode"},
-  @{name="nerd-fonts-Hack"},
   @{name="equalizerapo"},
   @{name="choco-cleaner"}
 )
+
 # Installing the applications using Chocolatey
 foreach ($app in $chocoApps) {
   choco install $app.name
 }
+
 # Installing bun.sh with the official sciprt install
 if (!(Get-Command bun -ErrorAction SilentlyContinue) -or !(Get-Command bunx -ErrorAction SilentlyContinue)) {
   irm bun.sh/install.ps1 | iex
 }
 
+# refreshing env variables
 refreshenv
+
 # Cleaning chocolatey with choco-cleaner package
 choco-cleaner
+
 # Open new powershell without admin right and install geforce-now, spotify and spicetify
 $installGeforceNow = "winget install -e --id Nvidia.GeForceNow"
 $installSpotify = "winget install -e --id Spotify.Spotify"
 $installSpicetify = "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"
 runas /user:$env:USERNAME "powershell.exe -NoProfile $installGeforceNow ; $installSpotify ; $installSpicetify"
+
 # refreshing env variables
 refreshenv
 
