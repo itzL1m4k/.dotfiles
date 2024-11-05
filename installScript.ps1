@@ -79,86 +79,14 @@ function New-Link {
   }
 }
 
-$wingetApps = @(
-  @{name="abbodi1406.vcredist"},
-  @{name="Microsoft.DirectX"},
-  @{name="Microsoft.XNARedist"},
-  @{name="Fastfetch-cli.Fastfetch"},
-  @{name="ajeetdsouza.zoxide"},
-  @{name="junegunn.fzf"},
-  @{name="Git.Git"; params="-i"},
-  @{name="7zip.7zip"; params="--force"},
-  @{name="Brave.Brave"},
-  @{name="Microsoft.WindowsTerminal.Preview"},
-  @{name="Microsoft.PowerShell"},
-  @{name="Starship.Starship"},
-  @{name="chrisant996.Clink"},
-  @{name="OpenJS.NodeJS"},
-  @{name="Oracle.JDK.23"},
-  @{name="Notepad++.Notepad++"},
-  @{name="VideoLAN.VLC"},
-  @{name="nomacs.nomacs"},
-  @{name="voidtools.Everything.Lite"},
-  @{name="AntibodySoftware.WizTree"},
-  @{name="BleachBit.BleachBit"},
-  @{name="KDE.Krita"},
-  @{name="OBSProject.OBSStudio"},
-  @{name="RevoUninstaller.RevoUninstaller"},
-  @{name="c0re100.qBittorrent-Enhanced-Edition"},
-  @{name="EpicGames.EpicGamesLauncher"},
-  @{name="Discord.Discord"},
-  @{name="Spotify.Spotify"},
-  @{name="Valve.Steam"},
-  @{name="9P8LTPGCBZXD"}
-
-  # @{name="Google.AndroidStudio"},
-  # @{name="Microsoft.VisualStudio.2022.Community"},
-)
-
-# Installing the applications using winget
-foreach ($app in $wingetApps) {
-  if ($app.params) {
-    winget install -e --id $app.name $app.params
-  } else {
-    winget install -e --id $app.name
-  }
-}
-
-# Enable 'allowGlobalConfirmation' feature
-choco feature enable -n allowGlobalConfirmation
-
-# List of applications to install via Chocolatey
-$chocoApps = @(
-  @{name="nerd-fonts-FiraCode"},
-  @{name="nerd-fonts-CascadiaCode"},
-  @{name="nerd-fonts-Hack"},
-  @{name="equalizerapo"},
-  @{name="choco-cleaner"}
-)
-
-# Installing the applications using Chocolatey
-foreach ($app in $chocoApps) {
-  choco install $app.name
-}
-
 # Installing bun.sh with the official sciprt install
 if (!(Get-Command bun -ErrorAction SilentlyContinue) -or !(Get-Command bunx -ErrorAction SilentlyContinue)) {
   irm bun.sh/install.ps1 | iex
 }
 
-refreshenv
-
-# Cleaning chocolatey with choco-cleaner package
-choco-cleaner
-
-# Open new powershell without admin right and install geforce-now, spotify and spicetify
-$installGeforceNow = "winget install -e --id Nvidia.GeForceNow"
-$installSpotify = "winget install -e --id Spotify.Spotify"
+# Open new powershell without admin right and install spicetify
 $installSpicetify = "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"
-runas /user:$env:USERNAME "powershell.exe -NoProfile $installGeforceNow ; $installSpotify ; $installSpicetify"
-
-# refreshing env variables
-refreshenv
+runas /user:$env:USERNAME "powershell.exe -NoProfile $installSpicetify"
 
 # Creating variable for ~/.dotfiles
 $dotfilesPath = "$env:USERPROFILE\.dotfiles"
@@ -183,6 +111,3 @@ New-Link -Path "$env:USERPROFILE\.config\starship.toml" -Target "$dotfilesPath\.
 New-Link -Path "$env:LOCALAPPDATA\clink\starship.lua" -Target "$dotfilesPath\clink\starship.lua" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\.bash_profile" -Target "$dotfilesPath\.bash_profile" -LinkType "Symbolic" -Force
 New-Link -Path "$env:USERPROFILE\.gitconfig" -Target "$dotfilesPath\.gitconfig" -LinkType "Symbolic" -Force
-
-# Run registry regedit
-Start-Process -FilePath "reg.exe" -ArgumentList "import", "C:\Users\$env:USERNAME\.dotfiles\registry\registry.reg" -Verb RunAs
