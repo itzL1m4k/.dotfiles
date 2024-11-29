@@ -31,10 +31,11 @@
         "defaults": 
         {
             "colorScheme": "xcad",
+            "cursorShape": "filledBox",
             "elevate": true,
             "font": 
             {
-                "face": "CaskaydiaCove Nerd Font",
+                "face": "Cascadia Code",
                 "weight": "medium"
             },
             "opacity": 96
