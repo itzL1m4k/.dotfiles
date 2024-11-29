@@ -3,8 +3,7 @@
 
 # Inserts a blank line between shell prompts
 add_newline = true
-format = """$directory$git_branch$git_status
- $character"""
+format = """$directory$git_branch$git_status$character"""
 
 [character]
 success_symbol = '[❯](bold purple)'
@@ -19,20 +18,18 @@ format = 'via [🎁 $version](208 bold) '
 # Shows current directory
 [directory]
 truncation_length = 3
-truncation_symbol = ' ~/'
-home_symbol = ' ~'
-read_only_style = '197'
-read_only = '  '
+truncation_symbol = '…/'
+read_only = '🔒'
+style = 'bold cyan'
 format = '[$path]($style)[$read_only]($read_only_style) '
 
 # Shows current git branch
 [git_branch]
-symbol = ' '
-format = 'via [$symbol$branch]($style)'
-
-# truncation_length = 4
-truncation_symbol = '…/'
+symbol = '🌱 '
+truncation_length = 25
+truncation_symbol = '…'
 style = 'bold purple'
+format = 'via [$symbol$branch]($style)'
 
 # Shows current git status
 [git_status]
@@ -49,3 +46,23 @@ modified = '  '
 staged = '[++\($count\)](purple)'
 renamed = ' 襁 '
 deleted = '  '
+
+# Dodaj moduł czasu wykonania komendy
+[cmd_duration]
+min_time = 10_000  # Pokazuj tylko dla komend trwających > 10s
+format = ' took [$duration](bold yellow)'
+
+# Dodaj moduł statusu ostatniej komendy
+[status]
+disabled = false
+format = '[$status]($style) '
+style = 'bold red'
+
+# Dodaj moduł Node.js (jeśli używasz)
+[nodejs]
+format = 'via [⬢ $version](bold green) '
+
+# Dodaj moduł Python (jeśli używasz)
+[python]
+format = 'via [🐍 $version]($style) '
+style = 'bold green'
