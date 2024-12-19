@@ -114,7 +114,6 @@ function Install-ChocolateyApps {
 # Funkcja do instalacji aplikacji użytkownika (bez uprawnień administratora)
 function Install-UserApps {
     $commands = @(
-        "winget install -e --id Nvidia.GeForceNow",
         "winget install -e --id Spotify.Spotify",
         "iwr -useb https://raw.githubusercontent.com/spicetify/marketplace/main/resources/install.ps1 | iex"
     )
@@ -183,11 +182,11 @@ function Main {
         @{name="EpicGames.EpicGamesLauncher"},
         @{name="Discord.Discord"},
         @{name="Valve.Steam"},
-        @{name="9P8LTPGCBZXD"}
+        @{name="9P8LTPGCBZXD"},
+        @{name="Nvidia.GeForceNow"}
 
         # @{name="Google.AndroidStudio"},
         # @{name="Microsoft.VisualStudio.2022.Community"},
-
     )
 
     $chocoApps = @(
