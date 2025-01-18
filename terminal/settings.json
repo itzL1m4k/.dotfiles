@@ -30,6 +30,7 @@
     {
         "defaults": 
         {
+            "adjustIndistinguishableColors": "indexed",
             "colorScheme": "xcad",
             "cursorShape": "filledBox",
             "elevate": true,
@@ -38,7 +39,8 @@
                 "face": "Cascadia Code",
                 "weight": "medium"
             },
-            "opacity": 96
+            "opacity": 80,
+            "useAcrylic": true
         },
         "list": 
         [
@@ -148,5 +150,6 @@
                 "useMica": false
             }
         }
-    ]
+    ],
+    "useAcrylicInTabRow": true
 }
