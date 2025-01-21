@@ -80,6 +80,8 @@ function Main {
     @{name="JetBrains.IntelliJIDEA.Community"},
     @{name="Google.AndroidStudio"},
     @{name="Microsoft.VisualStudio.2022.Community"}
+
+    # @{name="Microsoft.VisualStudioCode"},
   )
 
   Install-WingetApps -apps $wingetApps
@@ -96,3 +98,5 @@ function Main {
   cd "$env:TEMP"
   ./clear.bat
 }
+
+Main
