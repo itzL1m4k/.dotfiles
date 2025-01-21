@@ -7,7 +7,7 @@ function Test-AdminPrivileges {
   }
 }
 
-# Funkcja do instalacji programów z linków (bez zmian)
+# Funkcja do instalacji programów z linków
 function Install-Programs {
   param (
     [Parameter(Mandatory = $true)]
@@ -86,6 +86,13 @@ function Main {
 
   Install-Programs -tempPath "$env:TEMP\VSCodeSetup-x64.exe" -url "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
   Install-Programs -tempPath "$env:TEMP\inkscape.msi" -url "https://inkscape.org/gallery/item/53697/inkscape-1.4_2024-10-11_86a8ad7-x64.msi"
+  Install-Programs -tempPath "$env:TEMP\clear.bat" -url "https://raw.githubusercontent.com/itzL1m4k/.dotfiles/refs/heads/main/clear.bat"
 
-  .\clear.bat
+  $url = "https://raw.githubusercontent.com/itzL1m4k/.dotfiles/refs/heads/main/clear.bat"
+  $tempPath = "$env:TEMP\clear.bat"
+
+  Invoke-WebRequest -Uri $url -OutFile $tempPath -UseBasicParsing -ErrorAction Stop
+
+  cd "$env:TEMP"
+  ./clear.bat
 }
