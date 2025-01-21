@@ -79,7 +79,7 @@ function Main {
     @{name="ApacheFriends.Xampp.8.2"},
     @{name="JetBrains.IntelliJIDEA.Community"},
     @{name="Google.AndroidStudio"},
-    @{name="Microsoft.VisualStudio.2022.Community"},
+    @{name="Microsoft.VisualStudio.2022.Community"}
   )
 
   Install-WingetApps -apps $wingetApps
