@@ -157,6 +157,9 @@ function Main {
     Test-AdminPrivileges
 
     $wingetApps = @(
+        @{name="abbodi1406.vcredist"},
+        @{name="Microsoft.DirectX"},
+        @{name="Microsoft.XNARedist"},
         @{name="Fastfetch-cli.Fastfetch"},
         @{name="ajeetdsouza.zoxide"},
         @{name="junegunn.fzf"},
