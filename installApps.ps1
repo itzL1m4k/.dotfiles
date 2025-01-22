@@ -53,10 +53,10 @@ function Install-WingetApps {
   foreach ($app in $apps) {
     if ($app.params) {
       Write-Host "Instalowanie $($app.name) z parametrami: $($app.params)"
-      winget install -e --id $app.name $app.params
+      winget install -e --id $app.name --accept-package-agreements --accept-source-agreements -h --silent $app.params
     } else {
       Write-Host "Instalowanie $($app.name)"
-      winget install -e --id $app.name
+      winget install -e --id $app.name --accept-package-agreements --accept-source-agreements -h --silent
     }
   }
 }
@@ -88,15 +88,14 @@ function Main {
 
   Install-Programs -tempPath "$env:TEMP\VSCodeSetup-x64.exe" -url "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
   Install-Programs -tempPath "$env:TEMP\inkscape.msi" -url "https://inkscape.org/gallery/item/53697/inkscape-1.4_2024-10-11_86a8ad7-x64.msi"
-  Install-Programs -tempPath "$env:TEMP\clear.bat" -url "https://raw.githubusercontent.com/itzL1m4k/.dotfiles/refs/heads/main/clear.bat"
 
   $url = "https://raw.githubusercontent.com/itzL1m4k/.dotfiles/refs/heads/main/clear.bat"
   $tempPath = "$env:TEMP\clear.bat"
-
   Invoke-WebRequest -Uri $url -OutFile $tempPath -UseBasicParsing -ErrorAction Stop
 
   cd "$env:TEMP"
   ./clear.bat
 }
 
+# Uruchomienie skryptu
 Main
