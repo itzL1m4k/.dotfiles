@@ -65,7 +65,7 @@ function Main {
     @{name="Codeblocks.Codeblocks"},
     @{name="OpenJS.NodeJS.LTS"},
     @{name="Google.Chrome"},
-    @{name="Microsoft.VisualStudioCode"; params="--scope machine"},
+    @{name="Microsoft.VisualStudioCode"; params="--scope=machine"},
     @{name="Oracle.JDK.23"},
     @{name="GIMP.GIMP"},
     @{name="ApacheFriends.Xampp.8.2"},

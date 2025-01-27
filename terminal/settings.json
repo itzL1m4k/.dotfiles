@@ -33,7 +33,7 @@
             "adjustIndistinguishableColors": "indexed",
             "colorScheme": "xcad",
             "cursorShape": "filledBox",
-            "elevate": true,
+            "elevate": false,
             "font": 
             {
                 "face": "Cascadia Code",
