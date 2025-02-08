@@ -90,10 +90,10 @@ function Install-WingetApps {
     foreach ($app in $apps) {
         if ($app.params) {
             Write-Host "Instalowanie $($app.name) z parametrami: $($app.params)"
-            winget install -e --id --accept-package-agreements --accept-source-agreements --silent $app.name $app.params
+            winget install -e --id $app.name --accept-package-agreements --accept-source-agreements --silent $app.params
         } else {
             Write-Host "Instalowanie $($app.name)"
-            winget install -e --id --accept-package-agreements --accept-source-agreements --silent $app.name
+            winget install -e --id $app.name --accept-package-agreements --accept-source-agreements --silent 
         }
     }
 }
@@ -163,7 +163,7 @@ function Main {
         @{name="Fastfetch-cli.Fastfetch"},
         @{name="ajeetdsouza.zoxide"},
         @{name="junegunn.fzf"},
-        @{name="Git.Git"; params="-i"},
+        @{name="Git.Git"},
         @{name="7zip.7zip"; params="--force"},
         @{name="Brave.Brave"},
         @{name="Microsoft.WindowsTerminal.Preview"},
@@ -186,7 +186,8 @@ function Main {
         @{name="Discord.Discord"},
         @{name="Valve.Steam"},
         @{name="9P8LTPGCBZXD"},
-        @{name="Nvidia.GeForceNow"}
+        @{name="Nvidia.GeForceNow"},
+        @{name="Microsoft.VisualStudioCode"; params="--scope=machine"}
 
         # @{name="Google.AndroidStudio"},
         # @{name="Microsoft.VisualStudio.2022.Community"},
@@ -213,7 +214,6 @@ function Main {
 
     # Instalacja dodatkowych programów
     Install-Programs -tempPath "$env:TEMP\VencordInstaller.exe" -url "https://github.com/Vencord/Installer/releases/latest/download/VencordInstaller.exe"
-    Install-Programs -tempPath "$env:TEMP\VSCodeSetup-x64.exe" -url "https://code.visualstudio.com/sha/download?build=stable&os=win32-x64"
 
     Set-DotfilesConfiguration
 }
