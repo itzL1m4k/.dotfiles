@@ -90,10 +90,10 @@ function Install-WingetApps {
     foreach ($app in $apps) {
         if ($app.params) {
             Write-Host "Instalowanie $($app.name) z parametrami: $($app.params)"
-            winget install -e --id --accept-package-agreements --accept-source-agreements -h --silent $app.name $app.params
+            winget install -e --id --accept-package-agreements --accept-source-agreements --silent $app.name $app.params
         } else {
             Write-Host "Instalowanie $($app.name)"
-            winget install -e --id --accept-package-agreements --accept-source-agreements -h --silent $app.name
+            winget install -e --id --accept-package-agreements --accept-source-agreements --silent $app.name
         }
     }
 }
