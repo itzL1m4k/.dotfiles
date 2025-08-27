@@ -33,7 +33,7 @@
             "adjustIndistinguishableColors": "indexed",
             "colorScheme": "xcad",
             "cursorShape": "filledBox",
-            "elevate": false,
+            "elevate": true,
             "font": 
             {
                 "face": "Cascadia Code",
@@ -73,6 +73,18 @@
                 "hidden": false,
                 "name": "Git Bash",
                 "source": "Git"
+            },
+            {
+                "guid": "{ec838a8c-d565-5e28-80e4-4a1613398f38}",
+                "hidden": false,
+                "name": "Developer Command Prompt for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{cc278bae-1b02-5dcd-8139-02fee5cd0db0}",
+                "hidden": false,
+                "name": "Developer PowerShell for VS 2022",
+                "source": "Windows.Terminal.VisualStudio"
             }
         ]
     },
