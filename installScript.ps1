@@ -229,3 +229,7 @@ if (-not (Set-DotfilesConfiguration)) {
 }
 
 Import-ScoopRegistrySettings
+
+scoop update
+scoop update *
+scoop cache rm *
