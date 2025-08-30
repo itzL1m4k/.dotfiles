@@ -85,6 +85,12 @@
                 "hidden": false,
                 "name": "Developer PowerShell for VS 2022",
                 "source": "Windows.Terminal.VisualStudio"
+            },
+            {
+                "guid": "{fe66f4b8-350f-56bb-adb0-c2ce745f6db5}",
+                "hidden": false,
+                "name": "PowerShell (scoop)",
+                "source": "Windows.Terminal.PowershellCore"
             }
         ]
     },

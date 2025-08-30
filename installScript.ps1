@@ -145,6 +145,32 @@ function Set-DotfilesConfiguration {
   return $true
 }
 
+function Import-ScoopRegistrySettings {
+  $regFiles = @{
+    "7-Zip context menu"      = "$env:USERPROFILE\scoop\apps\7zip\current\install-context.reg"
+    "Git file associations"   = "$env:ProgramData\scoop\apps\git\current\install-file-associations.reg"
+    "Python PEP 514 registry" = "$env:USERPROFILE\scoop\apps\python\current\install-pep-514.reg"
+  }
+
+  foreach ($desc in $regFiles.Keys) {
+    $path = $regFiles[$desc]
+    if (Test-Path $path) {
+      if ($DryRun) {
+        Write-Host "Would import: $desc" -ForegroundColor Gray
+      }
+      else {
+        reg import "`"$path`"" 2>$null
+        if ($LASTEXITCODE -eq 0) {
+          Write-Host "Imported: $desc" -ForegroundColor Green
+        }
+        else {
+          Write-Warning "Failed: $desc"
+        }
+      }
+    }
+  }
+}
+
 # ---------- Main execution ----------
 Write-Host "Starting Scoop setup..." -ForegroundColor Cyan
 
@@ -210,3 +236,5 @@ $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";
 if (-not (Set-DotfilesConfiguration)) {
   Write-Warning "Dotfiles configuration failed"
 }
+
+Import-ScoopRegistrySettings
