@@ -193,6 +193,7 @@ $scoopApps = @(
   'main/ripgrep',
   'main/fd',
   'main/fzf',
+  'main/bun',
   'java/openjdk',
   'extras/brave',
   'extras/discord',
@@ -215,6 +216,7 @@ $scoopApps = @(
   'extras/epicgameslauncher',
   'extras/geforce-now',
   'extras/revouninstaller',
+  'extras/anytype',
   'games/steam',
   'nerd-fonts/FiraCode',
   'nerd-fonts/Cascadia-Code'
