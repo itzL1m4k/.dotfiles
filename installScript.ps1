@@ -162,6 +162,66 @@ function Import-ScoopRegistrySettings {
   }
 }
 
+function Install-AppFromUrl {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Url,
+
+    [string]$FileName
+  )
+
+  $TempDir = "$env:TEMP\AppInstall"
+  if (-Not (Test-Path $TempDir)) {
+    New-Item -ItemType Directory -Path $TempDir | Out-Null
+  }
+
+  if (-Not $FileName) {
+    $FileName = [System.IO.Path]::GetFileName($Url)
+    if (-Not $FileName) { $FileName = "installer.exe" }
+  }
+
+  $InstallerPath = Join-Path $TempDir $FileName
+
+  Write-Host "Downloading..."
+  curl -L $Url -o $InstallerPath
+
+  if (-Not (Test-Path $InstallerPath)) {
+    Write-Error "Download failed."
+    return
+  }
+
+  Write-Host "Running installer..."
+  Start-Process -FilePath $InstallerPath -Wait
+
+  Remove-Item $InstallerPath -Force
+  Write-Host "Done."
+}
+
+function Set-Wallpaper {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$ImagePath
+  )
+
+  if (-not (Test-Path $ImagePath)) {
+    Write-Error "File does not exist: $ImagePath"
+    return
+  }
+
+  Add-Type @"
+using System.Runtime.InteropServices;
+public class Wallpaper {
+    [DllImport("user32.dll", SetLastError = true)]
+    public static extern bool SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+}
+"@
+
+  # 20 = SPI_SETDESKWALLPAPER, 3 = SPIF_UPDATEINIFILE + SPIF_SENDCHANGE
+  [Wallpaper]::SystemParametersInfo(20, 0, $ImagePath, 3)
+  Write-Host "Wallpaper set to $ImagePath" -ForegroundColor Green
+}
+
+
 # ---------- Main execution ----------
 Write-Host "Starting Scoop setup..." -ForegroundColor Cyan
 
@@ -169,6 +229,11 @@ if (-not (Install-Scoop)) {
   Write-Error "Scoop installation failed"
   exit 1
 }
+
+scoop config aria2-enabled true
+scoop config cache-autoupdate true
+scoop config cache-max 5
+scoop config aria2-options "--max-connection-per-server=16 --split=16 --retry-wait=5"
 
 Add-ScoopBuckets
 
@@ -194,9 +259,15 @@ $scoopApps = @(
   'main/fd',
   'main/fzf',
   'main/bun',
+  'main/neovim',
+  'main/speedtest-cli',
+  'main/yt-dlp',
+  'main/eza',
+  'main/ffmpeg',
+  'main/gzip',
+  'main/unzip',
   'java/openjdk',
   'extras/brave',
-  'extras/discord',
   'extras/vencord-installer',
   'extras/windows-terminal',
   'extras/notepadplusplus',
@@ -217,21 +288,35 @@ $scoopApps = @(
   'extras/geforce-now',
   'extras/revouninstaller',
   'extras/anytype',
+  'extras/youtube-music',
+  'extras/psreadline',
+  'extras/posh-git',
+  'extras/ddu',
   'games/steam',
+  'games/prismlauncher',
   'nerd-fonts/FiraCode',
-  'nerd-fonts/Cascadia-Code'
+  'nerd-fonts/Cascadia-Code',
+  'nerd-fonts/Hack-NF',
+  'nerd-fonts/JetBrainsMono-NF'
 )
 
 Install-ScoopApps -Apps $scoopApps
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
+Install-AppFromUrl -Url "https://discord.com/api/download?platform=win&arch=x64"
+
 if (-not (Set-DotfilesConfiguration)) {
   Write-Warning "Dotfiles configuration failed"
 }
 
+Set-Wallpaper -ImagePath "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg"
+
 Import-ScoopRegistrySettings
+
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
 
 scoop update
 scoop update *
 scoop cache rm *
+scoop cleanup *
