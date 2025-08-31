@@ -221,6 +221,34 @@ public class Wallpaper {
   Write-Host "Wallpaper set to $ImagePath" -ForegroundColor Green
 }
 
+function Set-RunAsAdminTask {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$ScriptPath,
+    [Parameter(Mandatory = $true)]
+    [string]$TaskName
+  )
+
+  if (-not (Test-Path $ScriptPath)) {
+    Write-Error "File does not exist: $ScriptPath"
+    return
+  }
+
+  # Usuń stare zadanie, jeśli istnieje
+  if (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue) {
+    Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false
+  }
+
+  # Tworzenie nowego zadania
+  $action = New-ScheduledTaskAction -Execute $ScriptPath
+  $trigger = New-ScheduledTaskTrigger -AtLogOn
+  $principal = New-ScheduledTaskPrincipal -UserId "BUILTIN\Users" -LogonType Interactive -RunLevel Highest
+
+  Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal
+
+  Write-Host "Task '$TaskName' created to run $ScriptPath as admin at every logon." -ForegroundColor Green
+}
+
 
 # ---------- Main execution ----------
 Write-Host "Starting Scoop setup..." -ForegroundColor Cyan
@@ -301,18 +329,18 @@ $scoopApps = @(
 )
 
 Install-ScoopApps -Apps $scoopApps
+Install-AppFromUrl -Url "https://discord.com/api/download?platform=win&arch=x64"
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
-
-Install-AppFromUrl -Url "https://discord.com/api/download?platform=win&arch=x64"
 
 if (-not (Set-DotfilesConfiguration)) {
   Write-Warning "Dotfiles configuration failed"
 }
 
-Set-Wallpaper -ImagePath "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg"
-
 Import-ScoopRegistrySettings
+
+Set-Wallpaper -ImagePath "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg"
+Set-RunAsAdminTask -ScriptPath "$env:USERPROFILE\.dotfiles\clear.bat" -TaskName "clear-temp"
 
 git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
 
