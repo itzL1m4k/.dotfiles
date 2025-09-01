@@ -309,6 +309,8 @@ $scoopApps = @(
   'extras/wiztree',
   'extras/sysinternals',
   'extras/hwinfo',
+  'extras/cpu-z',
+  'extras/ ',
   'extras/bleachbit',
   'extras/equalizer-apo',
   'extras/krita',
@@ -329,7 +331,9 @@ $scoopApps = @(
 )
 
 Install-ScoopApps -Apps $scoopApps
+
 Install-AppFromUrl -Url "https://discord.com/api/download?platform=win&arch=x64"
+Install-AppFromUrl -Url "https://steelseries.com/gg/downloads/gg/latest/windows"
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 

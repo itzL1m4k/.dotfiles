@@ -28,3 +28,11 @@ function refreshenv {
   [System.Environment]::GetEnvironmentVariable("Path", "User")
   Write-Host "Environment refreshed" -ForegroundColor Green
 }
+
+function update {
+  scoop update
+  scoop update *
+  scoop cache rm *
+  scoop cleanup *
+  refreshenv
+}
