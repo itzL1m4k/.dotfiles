@@ -337,6 +337,8 @@ Install-AppFromUrl -Url "https://steelseries.com/gg/downloads/gg/latest/windows"
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
+git config --global credential.helper manager
+
 if (-not (Set-DotfilesConfiguration)) {
   Write-Warning "Dotfiles configuration failed"
 }
