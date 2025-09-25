@@ -303,7 +303,7 @@ $wingetApps = @(
   'Valve.Steam',
   'PrismLauncher.PrismLauncher',
   'RevoUninstaller.RevoUninstaller',
-  'Anytype.Anytype',
+  'Anytype.Anytype'
 )
 
 # Fonts (osobno bo mogą wymagać specjalnego traktowania)
