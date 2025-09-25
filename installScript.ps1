@@ -276,78 +276,34 @@ if (-not (Install-Winget)) {
 # Lista aplikacji do zainstalowania przez Winget
 $wingetApps = @(
   # System utilities
-  'Microsoft.VCRedist.2015+.x64',
-  'Microsoft.VCRedist.2015+.x86',
+  'abbodi1406.vcredist',
   '7zip.7zip',
   'Git.Git',
   'Microsoft.PowerShell',
   'Starship.Starship',
   'chrisant996.Clink',
-  'OpenJS.NodeJS',
   'Fastfetch-cli.Fastfetch',
-  'Python.Python.3.12',
-  'Google.PlatformTools',
-  'Kitware.CMake',
-  'MSYS2.MSYS2',
-  'cURL.cURL',
-  'GNU.Wget',
-  'BurntSushi.ripgrep.MSVC',
-  'sharkdp.fd',
-  'junegunn.fzf',
   'Oven-sh.Bun',
-  'Neovim.Neovim',
-  'Ookla.Speedtest.CLI',
   'yt-dlp.yt-dlp',
-  'eza-community.eza',
   'Gyan.FFmpeg',
-  
-  # Java
-  'Eclipse.Temurin.21.JDK',
-  
-  # Web browsers
   'Brave.Brave',
-  
-  # Communication
-  'Vencord.Vesktop',
   'Discord.Discord',
-  
-  # Terminal
   'Microsoft.WindowsTerminal',
-  
-  # Text editors
   'Notepad++.Notepad++',
-  'Microsoft.VisualStudioCode',
-  
-  # Media
   'VideoLAN.VLC',
   'nomacs.nomacs',
   'OBSProject.OBSStudio',
   'qBittorrent.qBittorrent.Enhanced',
-  'Spotify.Spotify',
-  
-  # System tools
   'voidtools.Everything',
   'WizTree.WizTree',
-  'Microsoft.Sysinternals.ProcessExplorer',
-  'REALiX.HWiNFO',
-  'CPUID.CPU-Z',
   'BleachBit.BleachBit',
   'Krita.Krita',
-  
-  # Gaming
   'EpicGames.EpicGamesLauncher',
   'Nvidia.GeForceNow',
   'Valve.Steam',
   'PrismLauncher.PrismLauncher',
-  
-  # Utilities
   'RevoUninstaller.RevoUninstaller',
   'Anytype.Anytype',
-  'YouTube.Music',
-  'Microsoft.PowerToys',
-  
-  # Development tools
-  'Microsoft.PowerShell.Preview'
 )
 
 # Fonts (osobno bo mogą wymagać specjalnego traktowania)
