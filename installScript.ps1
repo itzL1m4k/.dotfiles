@@ -222,7 +222,7 @@ function Set-Wallpaper {
   Add-Type @"
 using System.Runtime.InteropServices;
 public class Wallpaper {
-    [DllImport("user32.dll", SetLastError = true)]
+    [DllImport(""user32.dll"", SetLastError = true)]
     public static extern bool SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 }
 "@
@@ -275,7 +275,6 @@ if (-not (Install-Winget)) {
 
 # Lista aplikacji do zainstalowania przez Winget
 $wingetApps = @(
-  # System utilities
   'abbodi1406.vcredist',
   '7zip.7zip',
   'Git.Git',
