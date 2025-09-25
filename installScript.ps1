@@ -5,36 +5,36 @@ param(
   [string]$DotfilesRepo = 'https://github.com/itzL1m4k/.dotfiles.git'
 )
 
-function Install-Scoop {
-  if (Get-Command scoop -ErrorAction SilentlyContinue) { return $true }
+function Install-Winget {
+  if (Get-Command winget -ErrorAction SilentlyContinue) { return $true }
   if ($DryRun) { return $true }
 
   try {
-    Invoke-Expression "& {$(Invoke-RestMethod get.scoop.sh)} -RunAsAdmin"
-
-    $scoopShims = Join-Path $env:USERPROFILE "scoop\shims"
-    if (Test-Path $scoopShims) {
-      $env:Path = "$env:Path;$scoopShims"
+    # Sprawdź czy winget jest już zainstalowany
+    $winget = Get-AppxPackage -Name "Microsoft.DesktopAppInstaller" -ErrorAction SilentlyContinue
+    if ($winget) {
+      Write-Host "Winget is already installed" -ForegroundColor Green
+      return $true
     }
 
-    return $null -ne (Get-Command scoop -ErrorAction SilentlyContinue)
+    # Instaluj winget jeśli nie ma
+    Write-Host "Installing winget..." -ForegroundColor Yellow
+    $progressPreference = 'silentlyContinue'
+    Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile "$env:TEMP\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+    Add-AppxPackage "$env:TEMP\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+    
+    # Refresh PATH
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
+    
+    return $null -ne (Get-Command winget -ErrorAction SilentlyContinue)
   }
   catch {
+    Write-Error "Failed to install winget: $($_.Exception.Message)"
     return $false
   }
 }
 
-function Add-ScoopBuckets {
-  $buckets = @('extras', 'games', 'java', 'nerd-fonts', 'nonportable')
-
-  foreach ($bucket in $buckets) {
-    if ($DryRun) { continue }
-
-    scoop bucket add $bucket | Out-Null
-  }
-}
-
-function Install-ScoopApps {
+function Install-WingetApps {
   param([array]$Apps)
 
   $failed = @()
@@ -42,13 +42,25 @@ function Install-ScoopApps {
   foreach ($app in $Apps) {
     $pkg = if ($app -is [string]) { $app } else { $app.name }
 
-    if ($DryRun) { continue }
+    Write-Host "Installing $pkg..." -ForegroundColor Yellow
+
+    if ($DryRun) { 
+      Write-Host "DRY RUN: Would install $pkg" -ForegroundColor Cyan
+      continue 
+    }
 
     try {
-      scoop install $pkg
-      if ($LASTEXITCODE -ne 0) { $failed += $pkg }
+      $result = winget install --id $pkg --silent --accept-source-agreements --accept-package-agreements
+      if ($LASTEXITCODE -ne 0) { 
+        Write-Warning "Failed to install $pkg (exit code: $LASTEXITCODE)"
+        $failed += $pkg 
+      }
+      else {
+        Write-Host "Successfully installed $pkg" -ForegroundColor Green
+      }
     }
     catch {
+      Write-Warning "Exception installing $pkg : $($_.Exception.Message)"
       $failed += $pkg
     }
   }
@@ -145,23 +157,6 @@ function Set-DotfilesConfiguration {
   return $true
 }
 
-function Import-ScoopRegistrySettings {
-  $regFiles = @{
-    "7-Zip context menu"      = "$env:USERPROFILE\scoop\apps\7zip\current\install-context.reg"
-    "Git file associations"   = "$env:USERPROFILE\scoop\apps\git\current\install-file-associations.reg"
-    "Python PEP 514 registry" = "$env:USERPROFILE\scoop\apps\python\current\install-pep-514.reg"
-  }
-
-  foreach ($desc in $regFiles.Keys) {
-    $path = $regFiles[$desc]
-    if (Test-Path $path) {
-      else {
-        reg import "`"$path`"" 2>$null
-      }
-    }
-  }
-}
-
 function Install-AppFromUrl {
   param(
     [Parameter(Mandatory = $true)]
@@ -169,6 +164,11 @@ function Install-AppFromUrl {
 
     [string]$FileName
   )
+
+  if ($DryRun) {
+    Write-Host "DRY RUN: Would download and install from $Url" -ForegroundColor Cyan
+    return
+  }
 
   $TempDir = "$env:TEMP\AppInstall"
   if (-Not (Test-Path $TempDir)) {
@@ -182,19 +182,25 @@ function Install-AppFromUrl {
 
   $InstallerPath = Join-Path $TempDir $FileName
 
-  Write-Host "Downloading..."
-  curl -L $Url -o $InstallerPath
+  Write-Host "Downloading from $Url..." -ForegroundColor Yellow
+  try {
+    Invoke-WebRequest -Uri $Url -OutFile $InstallerPath -UseBasicParsing
+  }
+  catch {
+    Write-Error "Download failed: $($_.Exception.Message)"
+    return
+  }
 
   if (-Not (Test-Path $InstallerPath)) {
     Write-Error "Download failed."
     return
   }
 
-  Write-Host "Running installer..."
+  Write-Host "Running installer..." -ForegroundColor Yellow
   Start-Process -FilePath $InstallerPath -Wait
 
   Remove-Item $InstallerPath -Force
-  Write-Host "Done."
+  Write-Host "Installation completed." -ForegroundColor Green
 }
 
 function Set-Wallpaper {
@@ -202,6 +208,11 @@ function Set-Wallpaper {
     [Parameter(Mandatory = $true)]
     [string]$ImagePath
   )
+
+  if ($DryRun) {
+    Write-Host "DRY RUN: Would set wallpaper to $ImagePath" -ForegroundColor Cyan
+    return
+  }
 
   if (-not (Test-Path $ImagePath)) {
     Write-Error "File does not exist: $ImagePath"
@@ -229,6 +240,11 @@ function Set-RunAsAdminTask {
     [string]$TaskName
   )
 
+  if ($DryRun) {
+    Write-Host "DRY RUN: Would create scheduled task '$TaskName' for $ScriptPath" -ForegroundColor Cyan
+    return
+  }
+
   if (-not (Test-Path $ScriptPath)) {
     Write-Error "File does not exist: $ScriptPath"
     return
@@ -249,108 +265,146 @@ function Set-RunAsAdminTask {
   Write-Host "Task '$TaskName' created to run $ScriptPath as admin at every logon." -ForegroundColor Green
 }
 
-
 # ---------- Main execution ----------
-Write-Host "Starting Scoop setup..." -ForegroundColor Cyan
+Write-Host "Starting Windows setup with Winget..." -ForegroundColor Cyan
 
-if (-not (Install-Scoop)) {
-  Write-Error "Scoop installation failed"
+if (-not (Install-Winget)) {
+  Write-Error "Winget installation failed"
   exit 1
 }
 
-scoop config aria2-enabled true
-scoop config cache-autoupdate true
-scoop config cache-max 5
-scoop config aria2-options "--max-connection-per-server=16 --split=16 --retry-wait=5"
-
-Add-ScoopBuckets
-
-$scoopApps = @(
-  'main/aria2',
-  'main/sudo',
-  'extras/vcredist-aio',
-  'nonportable/equalizer-apo-np',
-  'main/7zip',
-  'main/git',
-  'main/pwsh',
-  'main/starship',
-  'main/clink',
-  'main/nodejs',
-  'main/fastfetch',
-  'main/python',
-  'main/adb',
-  'main/cmake',
-  'main/mingw',
-  'main/curl',
-  'main/wget',
-  'main/ripgrep',
-  'main/fd',
-  'main/fzf',
-  'main/bun',
-  'main/neovim',
-  'main/speedtest-cli',
-  'main/yt-dlp',
-  'main/eza',
-  'main/ffmpeg',
-  'main/gzip',
-  'main/unzip',
-  'java/openjdk',
-  'extras/brave',
-  'extras/vencord-installer',
-  'extras/windows-terminal',
-  'extras/notepadplusplus',
-  'extras/vscode',
-  'extras/vlc',
-  'extras/nomacs',
-  'extras/obs-studio',
-  'extras/qbittorrent-enhanced',
-  'extras/spotify',
-  'extras/everything',
-  'extras/wiztree',
-  'extras/sysinternals',
-  'extras/hwinfo',
-  'extras/cpu-z',
-  'extras/ ',
-  'extras/bleachbit',
-  'extras/equalizer-apo',
-  'extras/krita',
-  'extras/epicgameslauncher',
-  'extras/geforce-now',
-  'extras/revouninstaller',
-  'extras/anytype',
-  'extras/youtube-music',
-  'extras/psreadline',
-  'extras/posh-git',
-  'extras/ddu',
-  'games/steam',
-  'games/prismlauncher',
-  'nerd-fonts/FiraCode',
-  'nerd-fonts/Cascadia-Code',
-  'nerd-fonts/Hack-NF',
-  'nerd-fonts/JetBrainsMono-NF'
+# Lista aplikacji do zainstalowania przez Winget
+$wingetApps = @(
+  # System utilities
+  'Microsoft.VCRedist.2015+.x64',
+  'Microsoft.VCRedist.2015+.x86',
+  '7zip.7zip',
+  'Git.Git',
+  'Microsoft.PowerShell',
+  'Starship.Starship',
+  'chrisant996.Clink',
+  'OpenJS.NodeJS',
+  'Fastfetch-cli.Fastfetch',
+  'Python.Python.3.12',
+  'Google.PlatformTools',
+  'Kitware.CMake',
+  'MSYS2.MSYS2',
+  'cURL.cURL',
+  'GNU.Wget',
+  'BurntSushi.ripgrep.MSVC',
+  'sharkdp.fd',
+  'junegunn.fzf',
+  'Oven-sh.Bun',
+  'Neovim.Neovim',
+  'Ookla.Speedtest.CLI',
+  'yt-dlp.yt-dlp',
+  'eza-community.eza',
+  'Gyan.FFmpeg',
+  
+  # Java
+  'Eclipse.Temurin.21.JDK',
+  
+  # Web browsers
+  'Brave.Brave',
+  
+  # Communication
+  'Vencord.Vesktop',
+  'Discord.Discord',
+  
+  # Terminal
+  'Microsoft.WindowsTerminal',
+  
+  # Text editors
+  'Notepad++.Notepad++',
+  'Microsoft.VisualStudioCode',
+  
+  # Media
+  'VideoLAN.VLC',
+  'nomacs.nomacs',
+  'OBSProject.OBSStudio',
+  'qBittorrent.qBittorrent.Enhanced',
+  'Spotify.Spotify',
+  
+  # System tools
+  'voidtools.Everything',
+  'WizTree.WizTree',
+  'Microsoft.Sysinternals.ProcessExplorer',
+  'REALiX.HWiNFO',
+  'CPUID.CPU-Z',
+  'BleachBit.BleachBit',
+  'Krita.Krita',
+  
+  # Gaming
+  'EpicGames.EpicGamesLauncher',
+  'Nvidia.GeForceNow',
+  'Valve.Steam',
+  'PrismLauncher.PrismLauncher',
+  
+  # Utilities
+  'RevoUninstaller.RevoUninstaller',
+  'Anytype.Anytype',
+  'YouTube.Music',
+  'Microsoft.PowerToys',
+  
+  # Development tools
+  'Microsoft.PowerShell.Preview'
 )
 
-Install-ScoopApps -Apps $scoopApps
+# Fonts (osobno bo mogą wymagać specjalnego traktowania)
+$fontApps = @(
+  'DEVCOM.JetBrainsMonoNerdFont',
+  'Microsoft.CascadiaCode'
+)
 
-Install-AppFromUrl -Url "https://discord.com/api/download?platform=win&arch=x64"
-Install-AppFromUrl -Url "https://steelseries.com/gg/downloads/gg/latest/windows"
+Write-Host "Installing applications via Winget..." -ForegroundColor Green
+Install-WingetApps -Apps $wingetApps
 
+Write-Host "Installing fonts..." -ForegroundColor Green
+Install-WingetApps -Apps $fontApps
+
+# Aplikacje, które muszą być instalowane ręcznie
+Write-Host "Installing applications that require manual download..." -ForegroundColor Green
+Install-AppFromUrl -Url "https://steelseries.com/gg/downloads/gg/latest/windows" -FileName "SteelSeriesGG.exe"
+
+# Refresh environment variables
+Write-Host "Refreshing environment variables..." -ForegroundColor Yellow
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User")
 
-git config --global credential.helper manager
+# Git configuration
+if (Get-Command git -ErrorAction SilentlyContinue) {
+  git config --global credential.helper manager
+}
 
+# Dotfiles configuration
+Write-Host "Configuring dotfiles..." -ForegroundColor Green
 if (-not (Set-DotfilesConfiguration)) {
   Write-Warning "Dotfiles configuration failed"
 }
 
-Import-ScoopRegistrySettings
+# Set wallpaper
+if (Test-Path "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg") {
+  Set-Wallpaper -ImagePath "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg"
+}
 
-Set-Wallpaper -ImagePath "$env:USERPROFILE\.dotfiles\wallpapers\background.jpg"
-Set-RunAsAdminTask -ScriptPath "$env:USERPROFILE\.dotfiles\clear.bat" -TaskName "clear-temp"
+# Create scheduled task
+if (Test-Path "$env:USERPROFILE\.dotfiles\clear.bat") {
+  Set-RunAsAdminTask -ScriptPath "$env:USERPROFILE\.dotfiles\clear.bat" -TaskName "clear-temp"
+}
 
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+# Clone Neovim configuration
+Write-Host "Setting up Neovim configuration..." -ForegroundColor Green
+if (-not $DryRun) {
+  if (Test-Path "${env:LOCALAPPDATA}\nvim") {
+    Remove-Item "${env:LOCALAPPDATA}\nvim" -Recurse -Force -ErrorAction SilentlyContinue
+  }
+  git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+}
 
-scoop update
-scoop update *
-scoop cache rm *
-scoop cleanup *
+# Update all applications
+Write-Host "Updating all applications..." -ForegroundColor Green
+if (-not $DryRun) {
+  winget upgrade --all --silent --accept-source-agreements --accept-package-agreements
+}
+
+Write-Host "Setup completed!" -ForegroundColor Green
+Write-Host "Please restart your terminal to ensure all changes take effect." -ForegroundColor Yellow
