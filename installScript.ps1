@@ -104,12 +104,27 @@ function Set-RunAsAdminTask {
 if (-not (Install-Winget)) { exit 1 }
 
 $wingetApps = @(
-  'abbodi1406.vcredist','7zip.7zip','Git.Git','Microsoft.PowerShell','Starship.Starship',
-  'chrisant996.Clink','Fastfetch-cli.Fastfetch','Oven-sh.Bun','yt-dlp.yt-dlp','Gyan.FFmpeg',
-  'Brave.Brave','Discord.Discord','Microsoft.WindowsTerminal','Notepad++.Notepad++','VideoLAN.VLC',
-  'nomacs.nomacs','OBSProject.OBSStudio','qBittorrent.qBittorrent.Enhanced','voidtools.Everything',
-  'WizTree.WizTree','BleachBit.BleachBit','Krita.Krita','EpicGames.EpicGamesLauncher','Nvidia.GeForceNow',
-  'Valve.Steam','PrismLauncher.PrismLauncher','RevoUninstaller.RevoUninstaller','Anytype.Anytype'
+  '7zip.7zip',
+  'Git.Git',
+  'Microsoft.PowerShell',
+  'Starship.Starship',
+  'chrisant996.Clink',
+  'Brave.Brave',
+  'Discord.Discord',
+  'Microsoft.WindowsTerminal',
+  'VideoLAN.VLC',
+  'nomacs.nomacs',
+  'OBSProject.OBSStudio',
+  'qBittorrent.qBittorrent.Enhanced',
+  'voidtools.Everything',
+  'WizTree.WizTree',
+  'BleachBit.BleachBit',
+  'Krita.Krita',
+  'EpicGames.EpicGamesLauncher',
+  'Nvidia.GeForceNow',
+  'Valve.Steam',
+  'PrismLauncher.PrismLauncher',
+  'RevoUninstaller.RevoUninstaller',
 )
 
 $fontApps = @('DEVCOM.JetBrainsMonoNerdFont','Microsoft.CascadiaCode')
