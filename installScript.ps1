@@ -124,7 +124,7 @@ $wingetApps = @(
   'Nvidia.GeForceNow',
   'Valve.Steam',
   'PrismLauncher.PrismLauncher',
-  'RevoUninstaller.RevoUninstaller',
+  'RevoUninstaller.RevoUninstaller'
 )
 
 $fontApps = @('DEVCOM.JetBrainsMonoNerdFont','Microsoft.CascadiaCode')
