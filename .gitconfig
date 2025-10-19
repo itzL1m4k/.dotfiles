@@ -7,7 +7,3 @@
 	defaultBranch = main
 [safe]
 	directory = C:/Users/Admin/.dotfiles
-[credential]
-	helper = manager
-[credential "helperselector"]
-	selected = manager
